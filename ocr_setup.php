@@ -1,12 +1,11 @@
 <?php
-function create_metadata($client,$partnerId,$xsdData)
+function create_metadata($client,$xsdData)
 {
     $metadataObjectType=1;
     $viewsData = null;
 
     $pager=null;
     $filter = new KalturaMetadataProfileFilter();
-    $filter->partnerIdEqual = $partnerId;
     $profile_name=METADATA_SYSTEM_NAME;
     $filter->systemNameEqual = $profile_name;
     $results = $client->metadataProfile->listAction($filter, $pager);
@@ -120,7 +119,7 @@ $notification_url=$argv[5];
 $client = new KalturaClient($config);
 $ks = $client->session->start($secret, $userId, $type, $partnerId, $expiry, $privileges);
 $client->setKs($ks);
-$metadata_prof_id=create_metadata($client,$partnerId,$xsdData);
+$metadata_prof_id=create_metadata($client,$xsdData);
 $notification_id=create_event_notification($client,$notification_url);
 if (isset($argv[6])){
     $filter = new KalturaMediaEntryFilter();
@@ -136,11 +135,11 @@ $pager->pageSize = 500;
 $processed_entries=0;
 
 while ($processed_entries < $total_media_entries){
-    $pager->pageIndex= $page_index;
+    $pager->pageIndex=$page_index;
     $result = $client->media->listAction($filter, $pager);
 	foreach ($result->objects as $entry) {
 	    $processed_entries++;
 	    update_custom_meta_data($client,$metadata_prof_id,$entry->id);
 	}
-	$page_index++;
+    $page_index++;
 }
