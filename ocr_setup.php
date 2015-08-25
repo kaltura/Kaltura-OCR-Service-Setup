@@ -104,7 +104,7 @@ if ($argc < 5){
     echo 'Usage: '.__FILE__ . ' <partner id> <admin secret> <service url> <path/to/xsd> [comman separated categories to filter by]'."\n";
     exit (1);
 }
-require_once('/opt/kaltura/web/content/clientlibs/php5/KalturaClient.php');
+require_once('KalturaClient.php');
 define('METADATA_FIELD','ProcessOCR');
 define('METADATA_SYSTEM_NAME','IBMOCR');
 $userId = null;
