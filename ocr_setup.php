@@ -100,8 +100,8 @@ function update_custom_meta_data($client,$prof_id,$entry_id)
 
 
 
-if ($argc < 5){
-    echo 'Usage: '.__FILE__ . ' <partner id> <admin secret> <service url> <path/to/xsd> [comman separated categories to filter by]'."\n";
+if ($argc < 6){
+    echo 'Usage: '.__FILE__ . ' <partner id> <admin secret> <service url> <path/to/xsd> <notification URL> [comman separated categories to filter by]'."\n";
     exit (1);
 }
 require_once('KalturaClient.php');
