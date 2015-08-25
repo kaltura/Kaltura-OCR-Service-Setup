@@ -30,7 +30,7 @@ function create_metadata($client,$partnerId,$xsdData)
 
 }
 
-function create_event_notification($client)
+function create_event_notification($client,$notification_url)
 {
     // list available HTTP templates:
     $filter = new KalturaEventNotificationTemplateFilter();
@@ -67,7 +67,7 @@ function create_event_notification($client)
     $eventNotificationTemplate1->userParameters[0]->value->value=METADATA_FIELD;
     $eventNotificationTemplate1->userParameters[1]->value->value=METADATA_SYSTEM_NAME;
     $eventNotificationTemplate1->userParameters[2]->value->value='Yes';
-    $eventNotificationTemplate1->url = 'http://174.37.245.158:9081/IBM_Research/Test';
+    $eventNotificationTemplate1->url = $notification_url;
     $KalturaHttpNotificationDataFields=new KalturaHttpNotificationObjectData();
     $KalturaHttpNotificationDataFields->apiObjectType='KalturaMetadata';
     $KalturaHttpNotificationDataFields->format=2;
@@ -116,14 +116,15 @@ $type = KalturaSessionType::ADMIN;
 $config = new KalturaConfiguration($partnerId);
 $config->serviceUrl = $argv[3];
 $xsdData=file_get_contents($argv[4]);
+$notification_url=$argv[5];
 $client = new KalturaClient($config);
 $ks = $client->session->start($secret, $userId, $type, $partnerId, $expiry, $privileges);
 $client->setKs($ks);
 $metadata_prof_id=create_metadata($client,$partnerId,$xsdData);
-$notification_id=create_event_notification($client);
-if (isset($argv[5])){
+$notification_id=create_event_notification($client,$notification_url);
+if (isset($argv[6])){
     $filter = new KalturaMediaEntryFilter();
-    $filter->categoriesIdsMatchOr = $argv[5] ;
+    $filter->categoriesIdsMatchOr = $argv[6] ;
 }else{
     $filter=null;
 }
