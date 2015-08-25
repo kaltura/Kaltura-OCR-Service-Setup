@@ -128,10 +128,19 @@ if (isset($argv[6])){
 }else{
     $filter=null;
 }
-$pager = new KalturaFilterPager();
-$pager->pageSize = 0;
 
-$result = $client->media->listAction($filter, $pager);
-foreach ($result->objects as $entry) {
-    update_custom_meta_data($client,$metadata_prof_id,$entry->id);
+$total_media_entries = $client->media->count($filter);
+$pager = new KalturaFilterPager();
+$page_index=1;
+$pager->pageSize = 500;
+$processed_entries=0;
+
+while ($processed_entries < $total_media_entries){
+    $pager->pageIndex= $page_index;
+    $result = $client->media->listAction($filter, $pager);
+	foreach ($result->objects as $entry) {
+	    $processed_entries++;
+	    update_custom_meta_data($client,$metadata_prof_id,$entry->id);
+	}
+	$page_index++;
 }
