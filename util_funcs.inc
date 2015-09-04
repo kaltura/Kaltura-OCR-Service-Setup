@@ -104,6 +104,7 @@ function delete_caption_assets($client,$entry_id,$label)
 	    $captionPlugin = KalturaCaptionClientPlugin::get($client);
 	    $result = $captionPlugin->captionAsset->listAction($filter, null);
 	    foreach($result->objects as $caption_asset){
+		//var_dump($caption_asset);
 		if ($caption_asset->label === $label){
 		    echo 'Deleting captionAsset '.$caption_asset->id. ' for entry '. $entry_id."\n";
 		    $result = $captionPlugin->captionAsset->delete($caption_asset->id);
@@ -111,7 +112,7 @@ function delete_caption_assets($client,$entry_id,$label)
 	    }
 }
 
-function reset_metadata_field($client,$metadata_prof_id,$entry_id,$field_name)
+function delete_metadata_field($client,$metadata_prof_id,$entry_id,$field_name)
 {
 	$client->startMultiRequest();    
 	$filter = new KalturaMetadataFilter();

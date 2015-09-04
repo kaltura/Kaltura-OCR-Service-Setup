@@ -28,8 +28,7 @@ if ($results->totalCount){
     $metadata_prof_id=$results->objects[0]->id;
     $metadataPlugin = KalturaMetadataClientPlugin::get($client);
     $result = $metadataPlugin->metadataProfile->listFields($metadata_prof_id);
-    $xpath=$result->objects[0]->xPath;
-    echo "Found $profile_name, ID $metadata_prof_id. Will use $xpath to search.\n";
+    echo "Found $profile_name, ID $metadata_prof_id.\n";
 }else{
     echo "Could not find $profile_name. Exiting.\n";
     exit (1);
@@ -40,26 +39,26 @@ $filterAdvancedSearch = new KalturaMetadataSearchItem();
 $filterAdvancedSearch->metadataProfileId = $metadata_prof_id;
  
 $filterAdvancedSearchItems = new KalturaSearchCondition();
-$filterAdvancedSearchItems->field = $xpath; // Replace FieldName with the name obtained by calling metadataProfile service and showing defined fields
+$filterAdvancedSearchItems->field = "/*[local-name()='metadata']/*[local-name()='ProcessOCR']"; 
 $filterAdvancedSearchItems->value = 'Yes';
  
 $filterAdvancedSearch->items = array($filterAdvancedSearchItems);
 $filter->advancedSearch = $filterAdvancedSearch;
-
+//$filter=null;
 $total_media_entries = $client->media->count($filter);
 $pager = new KalturaFilterPager();
 $page_index=1;
 $pager->pageSize = 500;
 $processed_entries=0;
  
-
+//echo CAPTION_LABEL_TO_SEARCH."\n";exit;
 while ($processed_entries < $total_media_entries){
     $pager->pageIndex=$page_index;
     $result = $client->media->listAction($filter, $pager);
     foreach ($result->objects as $entry) {
 	$processed_entries++;
 	delete_caption_assets($client,$entry->id,CAPTION_LABEL_TO_SEARCH);
-	reset_metadata_field($client,$metadata_prof_id,$entry->id,METADATA_FIELD);
+	delete_metadata_field($client,$metadata_prof_id,$entry->id,METADATA_FIELD);
     }
     $page_index++;
 }
