@@ -93,4 +93,19 @@ function update_custom_meta_data($client,$prof_id,$entry_id)
     $xmlData = '<metadata> <'.METADATA_FIELD.'>Yes</'.METADATA_FIELD.'></metadata>';
     $result = $metadataPlugin->metadata->add($prof_id, $objectType, $objectId, $xmlData);
 }
+
+function delete_caption_assets($client,$entry_id,$label)
+{
+	    $filter = new KalturaAssetFilter();
+	    $filter->entryIdEqual = $entry_id;
+	    $captionPlugin = KalturaCaptionClientPlugin::get($client);
+	    $result = $captionPlugin->captionAsset->listAction($filter, null);
+	    foreach($result->objects as $caption_asset){
+		if ($caption_asset->label === $label){
+		    echo 'Deleting captionAsset '.$caption_asset->id. ' for entry '. $entry_id."\n";
+		    $result = $captionPlugin->captionAsset->delete($caption_asset->id);
+		}
+	    }
+}
+
 ?>
