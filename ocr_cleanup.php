@@ -7,9 +7,6 @@ if ($argc < 4){
     exit (1);
 }
 require_once('/opt/kaltura/web/content/clientlibs/php5/KalturaClient.php');
-define('METADATA_FIELD','ProcessOCR');
-define('METADATA_SYSTEM_NAME','IBMOCR');
-define('CAPTION_LABEL_TO_SEARCH','In-Video Text (OCR)');
 $userId = null;
 $expiry = null;
 $privileges = null;
@@ -59,9 +56,10 @@ $processed_entries=0;
 while ($processed_entries < $total_media_entries){
     $pager->pageIndex=$page_index;
     $result = $client->media->listAction($filter, $pager);
-	foreach ($result->objects as $entry) {
-	    $processed_entries++;
-	    delete_caption_assets($client,$entry->id,CAPTION_LABEL_TO_SEARCH);
-	}
+    foreach ($result->objects as $entry) {
+	$processed_entries++;
+	delete_caption_assets($client,$entry->id,CAPTION_LABEL_TO_SEARCH);
+	//reset_metadata_field($client,$metadata_prof_id,$entry->id,METADATA_FIELD);
+    }
     $page_index++;
 }

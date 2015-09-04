@@ -1,4 +1,7 @@
 <?php
+define('METADATA_FIELD','ProcessOCR');
+define('METADATA_SYSTEM_NAME','IBMOCR');
+define('CAPTION_LABEL_TO_SEARCH','In-Video Text (OCR)');
 function create_metadata($client,$xsdData)
 {
     $metadataObjectType=1;
@@ -106,6 +109,13 @@ function delete_caption_assets($client,$entry_id,$label)
 		    $result = $captionPlugin->captionAsset->delete($caption_asset->id);
 		}
 	    }
+}
+
+function reset_metadata_field($client,$metadata_prof_id,$entry_id,$field_name)
+{
+	$metadataplugin = kalturametadataclientplugin::get($client);
+	$xml_data = '<metadata> <'.$field_name.'></'.$field_name.'></metadata>';
+	$result = $metadataplugin->metadata->update($metadata_prof_id, $entry_id, $xml_data);
 }
 
 ?>
