@@ -113,9 +113,14 @@ function delete_caption_assets($client,$entry_id,$label)
 
 function reset_metadata_field($client,$metadata_prof_id,$entry_id,$field_name)
 {
-	$metadataplugin = kalturametadataclientplugin::get($client);
-	$xml_data = '<metadata> <'.$field_name.'></'.$field_name.'></metadata>';
-	$result = $metadataplugin->metadata->update($metadata_prof_id, $entry_id, $xml_data);
+	$client->startMultiRequest();    
+	$filter = new KalturaMetadataFilter();
+	$filter->metadataProfileIdEqual = $metadata_prof_id;
+	$filter->objectIdEqual = $entry_id;
+	$metadataPlugin = KalturaMetadataClientPlugin::get($client);
+	$result = $metadataPlugin->metadata->listAction($filter, null);
+	$metadataPlugin->metadata->delete('{1:result:objects:0:id}');
+	$results = $client->doMultiRequest();
 }
 
 ?>

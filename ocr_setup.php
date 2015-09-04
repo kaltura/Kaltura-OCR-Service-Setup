@@ -7,8 +7,6 @@ if ($argc < 6){
     exit (1);
 }
 require_once('/opt/kaltura/web/content/clientlibs/php5/KalturaClient.php');
-define('METADATA_FIELD','ProcessOCR');
-define('METADATA_SYSTEM_NAME','IBMOCR');
 $userId = null;
 $expiry = null;
 $privileges = null;

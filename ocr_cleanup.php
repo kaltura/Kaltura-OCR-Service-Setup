@@ -59,7 +59,7 @@ while ($processed_entries < $total_media_entries){
     foreach ($result->objects as $entry) {
 	$processed_entries++;
 	delete_caption_assets($client,$entry->id,CAPTION_LABEL_TO_SEARCH);
-	//reset_metadata_field($client,$metadata_prof_id,$entry->id,METADATA_FIELD);
+	reset_metadata_field($client,$metadata_prof_id,$entry->id,METADATA_FIELD);
     }
     $page_index++;
 }
