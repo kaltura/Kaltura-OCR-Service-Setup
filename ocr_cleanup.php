@@ -39,7 +39,7 @@ $filterAdvancedSearch = new KalturaMetadataSearchItem();
 $filterAdvancedSearch->metadataProfileId = $metadata_prof_id;
  
 $filterAdvancedSearchItems = new KalturaSearchCondition();
-$filterAdvancedSearchItems->field = "/*[local-name()='metadata']/*[local-name()='ProcessOCR']"; 
+$filterAdvancedSearchItems->field = "/*[local-name()='metadata']/*[local-name()='ProcessOCR']";
 $filterAdvancedSearchItems->value = 'Yes';
  
 $filterAdvancedSearch->items = array($filterAdvancedSearchItems);
@@ -51,7 +51,6 @@ $page_index=1;
 $pager->pageSize = 500;
 $processed_entries=0;
  
-//echo CAPTION_LABEL_TO_SEARCH."\n";exit;
 while ($processed_entries < $total_media_entries){
     $pager->pageIndex=$page_index;
     $result = $client->media->listAction($filter, $pager);
