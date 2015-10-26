@@ -1,5 +1,5 @@
 <?php
-require_once('util_funcs.inc');
+require_once(dirname(__FILE__).'/util_funcs.inc');
 
 
 if ($argc < 6){
